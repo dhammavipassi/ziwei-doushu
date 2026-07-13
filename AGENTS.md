@@ -15,8 +15,8 @@
 ```bash
 npm run dev          # 开发服务器
 npm run build        # 构建
-vercel --prod        # 部署到 Vercel
-npx wrangler pages deploy cf-deploy --project-name ziwei-doushu --branch main  # 部署到 Cloudflare
+npm run deploy:vercel  # 部署到 Vercel
+npm run deploy:cf      # 部署到 Cloudflare Pages（构建+复制+部署一条龙）
 ```
 
 ## 环境变量
