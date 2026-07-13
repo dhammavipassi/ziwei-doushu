@@ -6,13 +6,9 @@
     "build": "next build",
     "dev": "next dev",
     "start": "next start",
-    "build:cf": "npx @cloudflare/next-on-pages",
-    "preview:cf": "npx wrangler pages dev",
     "prepare": "husky",
-    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
-    "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+    "deploy:vercel": "vercel --prod",
+    "deploy:cf": "npm run build && mkdir -p cf-deploy && cp -r .vercel/output/static/* cf-deploy/ && cp cloudflare/_worker.js cf-deploy/_worker.js && npx wrangler pages deploy cf-deploy --project-name ziwei-doushu --branch main"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.27.0",
@@ -32,8 +28,6 @@
     "vercel": "^50.42.0"
   },
   "devDependencies": {
-    "@cloudflare/next-on-pages": "^1.13.16",
-    "@opennextjs/cloudflare": "^1.20.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
