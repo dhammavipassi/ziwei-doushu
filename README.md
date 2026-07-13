@@ -1,89 +1,137 @@
-# 紫微斗数 · 开源排盘引擎
+# 紫微斗数 · 倪海夏正宗排盘引擎
 
-> 🎉 **网站已完成 ICP 备案**（渝ICP备2026013379号-1），主域名已正式上线、全部功能正常访问。
->
-> 直接访问主域名 **https://metisziwei.com** 即可，排盘 / AI 解读 / 命盘历史等全部功能均已开放。
->
-> 💕 **发财的小手点一下，小红书 / 抖音 / 闲鱼 / X 关注：王多鱼AI**，第一时间看上线 + 解锁更多紫微干货～
+> 基于**倪海夏《天纪》**教学体系的紫微斗数排盘系统，包含完整排盘算法、四化系统、格局知识库、古籍原文数据，以及 AI 深度命盘解读。
 
-基于**倪海夏《天纪》**教学体系的紫微斗数排盘系统，包含完整排盘算法、四化系统、格局知识库、古籍原文数据，以及 **51.8 万条命盘样本数据**。
-
-线上体验：[metisziwei.com](https://metisziwei.com)
+基于开源项目 [Renhuai123/ziwei-doushu](https://github.com/Renhuai123/ziwei-doushu) 二次开发，新增了 AI 解读后端（DeepSeek V4 Pro）。
 
 ---
 
-## 51.8 万命盘样本数据
+## 线上部署
 
-> **下载位置：本仓库右侧 [Releases](https://github.com/Renhuai123/ziwei-doushu/releases/tag/v3.0-samples) 页面**
+| 平台 | 域名 | 排盘 | AI 解读 | 国内访问 |
+|------|------|:----:|:------:|:------:|
+| **Cloudflare Pages** | [ziwei.dhammaai.com](https://ziwei.dhammaai.com) | ✅ | ✅ | ✅ 直连 |
+| **Vercel** | [ziwei-doushu-mauve.vercel.app](https://ziwei-doushu-mauve.vercel.app) | ✅ | ✅ | 需 VPN |
+| **本地** | http://localhost:3000 | ✅ | ✅ | — |
 
-我们开源了一套完整的紫微斗数命盘样本数据集，覆盖 **51.8 万种排盘组合**（年 60 × 月 12 × 日 30 × 时 12 × 性别 2），每条样本包含完整的命盘结构和基于倪海夏体系的解读文本。
+- **国内用户** → `https://ziwei.dhammaai.com`（Cloudflare Pages + Pages Functions，国内直连）
+- **VPN 环境** → `https://ziwei-doushu-mauve.vercel.app`（Vercel，完整功能备份）
 
-### 数据规格
+---
 
-| 项目 | 说明 |
-|------|------|
-| 样本数量 | **518,400 条** |
-| 总大小 | 5.5 GB（分 3 卷压缩） |
-| 体系 | 倪海夏《天纪》正统（纯飞星派已下线） |
-| 内容 | 命盘 JSON + 13 主题解读文本（命格总览、财运、事业、感情、健康等） |
-| 验证 | 男女命差异化 100%、健康含子午流注 100%、女命含妇科保养 100% |
-| 口径 | 与线上 [metisziwei.com](https://metisziwei.com) 完全一致 |
+## AI 解读功能
 
-### 下载方式
+### 三个 API 路由
 
-前往 [Releases](https://github.com/Renhuai123/ziwei-doushu/releases/tag/v3.0-samples) 下载以下文件：
+| 路由 | 方法 | 功能 |
+|------|------|------|
+| `/api/interpret` | POST | AI 命盘解读（流式 SSE） |
+| `/api/heming` | POST | AI 合盘分析（流式 SSE） |
+| `/api/generate` | POST | 服务端起盘（前端已内嵌排盘，此路由为兼容保留） |
+
+### 模型
+
+- **DeepSeek V4 Pro**（`deepseek-v4-pro`）— 1.6T 参数 MoE，49B 激活
+- 内置 thinking 模式：先内部推理命盘结构，再输出解读
+- 代码过滤 `reasoning_content`，前端只收到最终解读文本
+- 流式输出格式：`data: {"delta":{"text":"..."}}\n\n`
+
+### 成本
+
+- 每次命盘解读约 ¥0.002-0.004（DeepSeek V4 Pro 定价）
+
+### 文件结构
 
 ```
-ziwei-samples-v3-part1.zip.001  (1.9 GB)
-ziwei-samples-v3-part2.zip.002  (1.9 GB)
-ziwei-samples-v3-part3.zip.003  (1.8 GB)
-SHA256SUMS.txt                  (校验文件)
+lib/ai/
+├── deepseek.ts          # DeepSeek LLM 调用模块（Vercel/Node.js 运行时）
+└── chart-serializer.ts  # 命盘数据序列化为 LLM 可读文本
+
+app/api/
+├── interpret/route.ts   # 命盘解读 API（Next.js Route Handler）
+├── heming/route.ts      # 合盘分析 API
+└── generate/route.ts    # 服务端起盘 API
+
+cf-deploy/
+├── _worker.js           # Cloudflare Pages Worker（处理 /api/* 路由）
+└── (静态文件)            # Next.js 静态导出
 ```
 
-下载后合并解压：
+---
+
+## 快速开始
 
 ```bash
-# macOS / Linux
-cat ziwei-samples-v3-part*.zip.* > combined.zip
-unzip combined.zip
+# 克隆
+git clone https://github.com/Renhuai123/ziwei-doushu.git
+cd ziwei-doushu
 
-# Windows (PowerShell)
-Get-Content ziwei-samples-v3-part*.zip.* -Encoding Byte -ReadCount 0 | Set-Content combined.zip -Encoding Byte
-Expand-Archive combined.zip
+# 安装依赖
+npm install
+
+# 配置环境变量
+cp .env.example .env.local
+# 编辑 .env.local，填入 DeepSeek API Key
+
+# 启动开发服务器
+npm run dev
 ```
 
-### 用途
+### 环境变量
 
-- 微调小模型的训练语料（51.8 万 input-output 配对）
-- AI 对话的 RAG 检索源
-- 修改 `patterns.ts` 后做 A/B 基线对比
-- 紫微斗数研究与数据分析
+```bash
+# .env.local
+DEEPSEEK_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+DEEPSEEK_MODEL=deepseek-v4-pro
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
 
-### 数据许可与引用
+获取 DeepSeek API Key：https://platform.deepseek.com/
 
-📂 **完全开源 · 可自由商用** —— 你可以在任何项目里使用这套数据，包括但不限于：
+---
 
-- 商业产品 / SaaS / 付费应用
-- AI 模型微调（开源或闭源模型均可）
-- 二次开发、再分发、衍生数据集
-- 学术研究、技术博客、教学课程
+## 部署
 
-无需付费、无需申请、无需事先告知。
+### 方式一：Vercel（推荐，最简单）
 
-**唯一的要求是保留数据来源标注（attribution）**：
+```bash
+# 安装 Vercel CLI
+npm i -g vercel
 
-> 本项目使用了 **紫微斗数开源样本数据集 v3.0**（518,400 条）
-> 来源：https://github.com/Renhuai123/ziwei-doushu
-> 作者：王多鱼AI
+# 部署
+vercel --prod
 
-放在哪里都行：
+# 配置环境变量
+vercel env add DEEPSEEK_API_KEY production
+vercel env add DEEPSEEK_MODEL production
+```
 
-- **网页 / 产品**：About 页 / 关于我们 / 数据来源 / 页脚，写一行链接即可
-- **AI 模型**：模型卡（Model Card）或数据集卡（Dataset Card）的 "Training Data" 字段
-- **学术论文**：参考文献或致谢章节
-- **二次发布的数据集**：README 或 metadata 文件里注明上游来源
+### 方式二：Cloudflare Pages（国内直连）
 
-仅此一条，其余都自由。希望这套数据能帮你做出好东西 —— 做出来记得来小红书 / 抖音 / 闲鱼 **@王多鱼AI** 打个招呼 👋
+```bash
+# 1. 构建静态文件
+npm run build
+
+# 2. 准备部署目录（静态文件 + _worker.js）
+mkdir -p cf-deploy
+cp -r .vercel/output/static/* cf-deploy/
+# _worker.js 已在 cf-deploy/ 中，处理 /api/* 路由
+
+# 3. 部署
+npx wrangler pages deploy cf-deploy --project-name ziwei-doushu --branch main
+
+# 4. 配置 Secrets
+npx wrangler pages secret put DEEPSEEK_API_KEY --project-name ziwei-doushu
+npx wrangler pages secret put DEEPSEEK_MODEL --project-name ziwei-doushu
+
+# 5. 绑定自定义域名
+# 在 Cloudflare Dashboard → Pages → ziwei-doushu → Custom domains 添加域名
+# DNS 添加 CNAME: ziwei → ziwei-doushu.pages.dev（开启代理）
+```
+
+> **注意**：Cloudflare Pages 用 `_worker.js`（Advanced Mode）实现 API 路由。
+> `@cloudflare/next-on-pages` 和 `@opennextjs/cloudflare` 与 Next.js 15.5 不兼容，
+> 所以不用那些工具，直接用 `_worker.js` + 静态文件。
 
 ---
 
@@ -110,7 +158,7 @@ Expand-Archive combined.zip
 
 ### 前端界面（`app/` + `components/`）
 
-完整的 Next.js 14 前端，包含：
+完整的 Next.js 15 前端，包含：
 
 - 排盘工作台（命盘方格、宫位详情、星曜面板）
 - 合盘分析页
@@ -119,55 +167,17 @@ Expand-Archive combined.zip
 - 亮色/暗色主题切换
 - 移动端适配
 
-### SEO 知识图谱（`lib/seo/`）
-
-14 主星 × 12 宫位的结构化知识数据，可用于内容生成或知识库构建。
-
----
-
-## 未包含的部分
-
-以下属于平台运营层，不在开源范围内：
-
-- **AI 解读 prompt**：基于倪海夏体系调教的命盘解读提示词
-- **后端 API**：`/api/interpret`、`/api/heming`、`/api/generate` 等路由实现
-- **用户系统**：登录、短信验证、会员、支付
-- **服务端安全**：签名校验、防刷、水印
-- **部署配置**：Vercel/Nginx/Docker/数据库
-
-如果你需要 AI 解读能力，可以参考 `lib/ziwei/patterns.ts` 和 `heming-knowledge.ts` 中的知识库，结合任意 LLM 自行构建 prompt。
-
----
-
-## 快速开始
-
-```bash
-# 克隆
-git clone https://github.com/Renhuai123/ziwei-doushu.git
-cd ziwei-doushu
-
-# 安装依赖
-npm install
-
-# 配置环境变量
-cp .env.example .env.local
-# 编辑 .env.local，填入你的 AI API Key
-
-# 启动开发服务器
-npm run dev
-```
-
-> 注意：开源版不含后端 API 路由，AI 解读功能需要你自行实现 `/api/interpret` 等接口。排盘算法和前端界面可独立运行。
-
 ---
 
 ## 技术栈
 
-- **框架**：Next.js 14（App Router）
+- **框架**：Next.js 15.5（App Router）
 - **语言**：TypeScript
 - **样式**：Tailwind CSS + CSS Variables 设计系统
 - **排盘**：基于 [iztro](https://github.com/SylarLong/iztro) + lunar-javascript
 - **动画**：Framer Motion
+- **AI**：DeepSeek V4 Pro（OpenAI 兼容协议，流式 SSE）
+- **部署**：Cloudflare Pages（主）+ Vercel（备）
 
 ---
 
@@ -176,8 +186,6 @@ npm run dev
 紫微斗数是中国传统命理学的瑰宝，倪海夏老师在《天纪》中系统梳理了正宗的紫微斗数体系。我们希望通过技术手段让更多人接触和学习这门学问。
 
 开源排盘算法和知识库，是因为我们相信：**算法是公开的传统智慧，不应该被锁在围墙里**。真正的价值在于解读的深度、用户体验的打磨、以及持续运营的积累。
-
-想自己搭？代码都在这里，拿去用。嫌麻烦？来 [metisziwei.com](https://metisziwei.com) 直接用。
 
 ---
 
@@ -188,14 +196,11 @@ npm run dev
 | 内容 | 协议 | 简单说 |
 |------|------|--------|
 | **代码**（`lib/`、`app/`、`components/`） | [MIT License](./LICENSE) | 拿去随便用，保留 LICENSE 文件即可 |
-| **数据**（Releases 中的 51.8 万样本数据集 v3.0） | 自由使用 · 要求 attribution | 商用也行，**注明数据来源即可**，详见上文 [数据许可与引用](#数据许可与引用) |
 | **古籍原文**（骨髓赋、紫微斗数全集 / 全书等） | Public Domain | 古书都是公有领域，不存在版权 |
-
-**一句话**：拿去用，商用也行，把数据来源链接带上就行。
 
 ---
 
-## 联系
+## 致谢
 
-- 线上平台：[metisziwei.com](https://metisziwei.com)
-- Issues：欢迎提 Bug 和建议
+- 原项目：[Renhuai123/ziwei-doushu](https://github.com/Renhuai123/ziwei-doushu) — 排盘算法、格局知识库、古籍数据
+- 倪海夏老师 — 《天纪》紫微斗数体系传承

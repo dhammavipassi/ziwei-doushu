@@ -6,3 +6,16 @@ node_modules/
 dist/
 *.tsbuildinfo
 .DS_Store
+.vercel
+
+# OpenNext
+.open-next
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+
+# Cloudflare deploy artifacts
+cf-deploy/
+cf-functions/

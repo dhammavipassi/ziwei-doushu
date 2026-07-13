@@ -1,18 +1,18 @@
 /**
- * /library/search?q=xxx — 搜索结果页
+ * /library/search?q=xxx — 搜索结果页（客户端渲染，兼容静态部署）
  */
 
+'use client';
+
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { Suspense, useMemo } from 'react';
 import { searchClassics, getParagraphById } from '@/lib/classics';
 
-export const metadata = {
-  title: '搜索 · 古籍原典库',
-};
-
-export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
-  const sp = await searchParams;
-  const q = sp.q?.trim() || '';
-  const hits = q ? searchClassics(q, 50) : [];
+function SearchResults() {
+  const sp = useSearchParams();
+  const q = sp.get('q')?.trim() || '';
+  const hits = useMemo(() => q ? searchClassics(q, 50) : [], [q]);
 
   return (
     <div style={{ background: 'var(--bg-page)', minHeight: '100vh' }}>
@@ -117,5 +117,13 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
         mark { background: rgba(184,146,42,0.3); color: #8b6a14; padding: 0 2px; border-radius: 2px; font-weight: 600; }
       `}</style>
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div style={{ background: 'var(--bg-page)', minHeight: '100vh' }} />}>
+      <SearchResults />
+    </Suspense>
   );
 }
