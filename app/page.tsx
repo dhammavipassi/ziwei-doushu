@@ -1172,12 +1172,7 @@ export default function HomePage() {
 
         <div className="text-center">
           <p className="text-[10px] tracking-wider mb-3" style={{ color: c.footerText }}>
-            紫微命盘 · 基于倪海夏正宗体系 · 仅供参考，命运掌握在自己手中
-          </p>
-          <p className="text-[10px] tracking-wider mb-3 max-w-2xl mx-auto leading-relaxed"
-            style={{ color: c.footerText, opacity: 0.85 }}>
-            本平台基于中国传统文化研究，仅提供学习参考。<br className="sm:hidden" />
-            不构成任何医疗、投资、法律或重大决策建议。
+            紫微命盘 · 基于倪海夏正宗体系
           </p>
           <p className="text-[10px] tracking-wider" style={{ color: c.footerText }}>
             <a href="/terms" style={{ color: c.footerText, textDecoration: 'underline' }}>服务条款</a>
