@@ -22,3 +22,4 @@ cf-functions/
 
 # 但 cloudflare/_worker.js 是源码，需要提交
 !cloudflare/_worker.js
+node_modules
