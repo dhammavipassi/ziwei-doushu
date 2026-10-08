@@ -437,6 +437,18 @@ export function generateChart(
   opts?: { leapMonth?: LunarMonthPolicy },
 ): ZiweiChart {
   const { year, month, day, hour, gender } = birthInfo;
+  if (!Number.isInteger(hour) || hour < 0 || hour > 11) {
+    throw new RangeError(`hour must be an integer branch index from 0 to 11; received ${hour}`);
+  }
+  // 公历日期必须真实存在：2 月 30 日、非闰年 2 月 29 日、4 月 31 日这类日期，
+  // iztro 不报错而是顺延成下个月的头几天排盘，结果会和真实日期的盘重复。
+  const probe = new Date(Date.UTC(year, month - 1, day));
+  if (
+    !Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day) ||
+    probe.getUTCFullYear() !== year || probe.getUTCMonth() !== month - 1 || probe.getUTCDate() !== day
+  ) {
+    throw new RangeError(`solar date does not exist: ${year}-${month}-${day}`);
+  }
   const iztroGender = gender === 'male' ? '男' : '女';
 
   // 闰月处理（流派分歧：归本月 / 归下月 / 前后半分）

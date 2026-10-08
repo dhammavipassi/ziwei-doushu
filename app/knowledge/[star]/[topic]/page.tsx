@@ -5,7 +5,7 @@
  * 每页含完整的 STAR_DB 4 段论断（一句话定调/核心论断/命盘依据/经典出处）
  *
  * SEO 要点：
- *  - title 含主关键词（如"紫微入命宫·倪海夏体系详解"）
+ *  - title 含主关键词（如"紫微入命宫·倪海厦体系详解"）
  *  - description 用 dingdiao（一句话定调）
  *  - JSON-LD Article 结构化数据
  *  - 内链：同主星其他 12 宫 + 同宫其他 13 主星
@@ -24,6 +24,7 @@ import {
   STAR_TO_SLUG,
   SLUG_TO_STAR,
 } from '@/lib/seo/knowledge';
+import { SITE_URL } from '@/lib/site';
 
 // 允许动态参数：如果某个 star/topic 组合不在 generateStaticParams 列表中
 // 也允许运行时按需渲染，避免中文 URL 编码问题导致 404
@@ -42,9 +43,9 @@ export async function generateMetadata({ params }: { params: Promise<{ star: str
   const data = getKnowledge(star, topic as TopicKey);
   if (!data.exists) return {};
 
-  const title = `${star}入${data.palaceName}宫 · ${data.topicLabel} · 倪海夏体系详解`;
+  const title = `${star}入${data.palaceName}宫 · ${data.topicLabel} · 倪海厦体系详解`;
   const description = data.parsed.dingdiao
-    || `${star}入${data.palaceName}宫的紫微斗数解读 — 基于倪海夏《天纪》体系与古籍《紫微斗数全集》《骨髓赋》。`;
+    || `${star}入${data.palaceName}宫的紫微斗数解读 — 基于倪海厦《天纪》体系与古籍《紫微斗数全集》《骨髓赋》。`;
 
   return {
     title,
@@ -53,13 +54,13 @@ export async function generateMetadata({ params }: { params: Promise<{ star: str
       title,
       description,
       type: 'article',
-      url: `https://wdyziweidoushu666.com/knowledge/${slug}/${topic}`,
+      url: `${SITE_URL}/knowledge/${slug}/${topic}`,
     },
     alternates: {
-      canonical: `https://wdyziweidoushu666.com/knowledge/${slug}/${topic}`,
+      canonical: `${SITE_URL}/knowledge/${slug}/${topic}`,
     },
     keywords: [
-      '紫微斗数', '倪海夏', star, data.palaceName, data.topicLabel,
+      '紫微斗数', '倪海厦', star, data.palaceName, data.topicLabel,
       `${star}${data.palaceName}`, `${star}入${data.palaceName}`,
       `紫微斗数 ${star}`, '倪海厦紫微斗数', '紫微斗数全集',
     ],
@@ -84,16 +85,16 @@ export default async function KnowledgePage({ params }: { params: Promise<{ star
     '@type': 'Article',
     headline: `${star}入${data.palaceName}宫 · ${data.topicLabel}`,
     description: data.parsed.dingdiao,
-    author: { '@type': 'Organization', name: '紫微研究 · 倪海夏正宗' },
+    author: { '@type': 'Organization', name: '紫微研究 · 倪海厦正宗' },
     publisher: {
       '@type': 'Organization',
       name: '紫微研究',
-      url: 'https://wdyziweidoushu666.com',
+      url: SITE_URL,
     },
     datePublished: '2026-04-28',
     dateModified: '2026-04-28',
-    mainEntityOfPage: `https://wdyziweidoushu666.com/knowledge/${slug}/${topic}`,
-    articleSection: '紫微斗数 · 倪海夏体系',
+    mainEntityOfPage: `${SITE_URL}/knowledge/${slug}/${topic}`,
+    articleSection: '紫微斗数 · 倪海厦体系',
     keywords: [`紫微斗数`, star, data.palaceName, data.topicLabel].join(', '),
   };
 
@@ -130,7 +131,7 @@ export default async function KnowledgePage({ params }: { params: Promise<{ star
         {/* 标题区 */}
         <header style={{ marginBottom: '36px' }}>
           <div style={{ fontSize: '11px', color: 'var(--tx-3)', letterSpacing: '0.25em', marginBottom: '8px' }}>
-            {data.topicLabel} · 倪海夏体系详解
+            {data.topicLabel} · 倪海厦体系详解
           </div>
           <h1 style={{ fontSize: 'clamp(28px, 5vw, 44px)', fontWeight: 700, color: 'var(--tx-0)', letterSpacing: '0.1em', lineHeight: 1.2 }}>
             {star}入{data.palaceName}宫
@@ -275,7 +276,8 @@ export default async function KnowledgePage({ params }: { params: Promise<{ star
 
       {/* 页脚 */}
       <footer style={{ borderTop: '1px solid rgba(184,146,42,0.15)', padding: '20px 24px', textAlign: 'center', fontSize: '11px', color: 'var(--tx-3)', letterSpacing: '0.1em' }}>
-        <div>紫微研究 · 基于倪海夏正宗体系</div>
+        <div style={{ marginBottom: '6px' }}>紫微研究 · 基于倪海厦正宗体系 · 仅供学习参考</div>
+        <div style={{ opacity: 0.85 }}>本平台不构成任何医疗、投资、法律或重大决策建议</div>
       </footer>
     </div>
   );

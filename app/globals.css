@@ -429,3 +429,8 @@ body {
   body { background: white; color: #1a1a18; }
   @page { margin: 1.2cm; size: A4 landscape; }
 }
+
+/* 原生下拉框（年 / 月 / 日 / 时辰 / 省市）：深色主题下选项列表用实色底。
+   select 本身是半透明底 + 浅色字，Windows 上原生下拉列表是白底，浅灰字配白底看不清（#14） */
+[data-theme="dark"] select { color-scheme: dark; }
+[data-theme="dark"] select option { background-color: var(--bg-2); color: var(--tx-1); }

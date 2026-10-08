@@ -10,8 +10,9 @@
 import type { MetadataRoute } from 'next';
 import { ALL_BOOKS } from '@/lib/classics';
 import { getAllKnowledgeRoutes } from '@/lib/seo/knowledge';
+import { SITE_URL } from '@/lib/site';
 
-const BASE_URL = 'https://wdyziweidoushu666.com';
+const BASE_URL = SITE_URL;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastmod = new Date('2026-04-28');

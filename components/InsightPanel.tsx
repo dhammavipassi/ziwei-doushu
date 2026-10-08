@@ -38,7 +38,7 @@ const TOPIC_PROMPTS: Record<string, string> = {
 用一句话概括这个命盘的核心格局与命主气质。
 
 **【主星解读】**
-命宫主星的核心特质，引用倪海夏原话或观点。
+命宫主星的核心特质，引用倪海厦原话或观点。
 
 **【三方四正】**
 财、官、迁三宫的联动分析及整体格局。
@@ -55,7 +55,7 @@ const TOPIC_PROMPTS: Record<string, string> = {
 一句话定性感情命格。
 
 **【夫妻宫分析】**
-夫妻宫主星、四化，以及倪海夏体系的具体解读。
+夫妻宫主星、四化，以及倪海厦体系的具体解读。
 
 **【三方联动】**
 相关宫位对感情的影响。
@@ -106,7 +106,7 @@ const TOPIC_PROMPTS: Record<string, string> = {
 疾厄宫星曜与健康含义。
 
 **【主要风险】**
-结合倪海夏子午流注理论，分析主要健康隐患与需关注的部位。
+结合倪海厦子午流注理论，分析主要健康隐患与需关注的部位。
 
 **【大限健康走势】**
 当下健康趋势与关键时间段。
@@ -229,7 +229,7 @@ export default function InsightPanel({ chart, selectedPalace, selectedSiHua }: I
 ${selectedPalace.name}在命盘中的意义，以及这种星曜配置的整体判断。
 
 **【主星解读】**
-主星在此宫的倪海夏体系解读，引用具体观点。
+主星在此宫的倪海厦体系解读，引用具体观点。
 
 **【三方四正联动】**
 三方四正宫位对此宫的影响。
@@ -257,7 +257,7 @@ ${selectedPalace.name}在命盘中的意义，以及这种星曜配置的整体�
     const prompt = `请分析【${viewLabel}${selectedSiHua.starName}化${selectedSiHua.siHua}】的飞化影响，按以下结构输出：
 
 **【化${selectedSiHua.siHua}基本含义】**
-化${selectedSiHua.siHua}在倪海夏体系中的核心含义，以及${selectedSiHua.starName}化${selectedSiHua.siHua}的特殊含义。
+化${selectedSiHua.siHua}在倪海厦体系中的核心含义，以及${selectedSiHua.starName}化${selectedSiHua.siHua}的特殊含义。
 
 **【落宫影响】**
 ${selectedSiHua.starName}化${selectedSiHua.siHua}落在【${palaceName}】，该宫主管的领域受到何种影响，倪师如何解读。
@@ -281,6 +281,7 @@ ${selectedSiHua.starName}化${selectedSiHua.siHua}落在【${palaceName}】，�
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ chart, messages: apiMessages }),
       });
+      if (res.status === 404) throw new Error('api-missing');
       if (!res.ok) throw new Error('请求失败');
       if (!res.body) throw new Error('无响应流');
 
@@ -309,8 +310,9 @@ ${selectedSiHua.starName}化${selectedSiHua.siHua}落在【${palaceName}】，�
           } catch { /* skip */ }
         }
       }
-    } catch {
-      setMessages(prev => [...prev, { role: 'assistant', content: '解读失败，请稍后重试。' }]);
+    } catch (e) {
+      const missing = e instanceof Error && e.message === 'api-missing';
+      setMessages(prev => [...prev, { role: 'assistant', content: missing ? '开源版不含 AI 解读接口（/api/interpret），需要你自己实现后才能用，详见 README「快速开始」。排盘本身不需要任何 API Key。' : '解读失败，请稍后重试。' }]);
     } finally {
       setLoading(false);
       loadingRef.current = false;

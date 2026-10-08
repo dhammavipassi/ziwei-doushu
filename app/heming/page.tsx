@@ -3,6 +3,7 @@ import { useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import BirthForm, { type BirthFormState } from '@/components/BirthForm';
 import { formToBirthInfo } from '@/lib/ziwei/share';
+import { generateChart as buildChart } from '@/lib/ziwei/algorithm';
 import type { BirthInfo, ZiweiChart } from '@/lib/ziwei/types';
 import { useTheme } from '@/components/ThemeProvider';
 
@@ -63,19 +64,16 @@ export default function HemingPage() {
   const [analyzing, setAnalyzing] = useState(false);
   const [question, setQuestion] = useState('');
   const [analysisError, setAnalysisError] = useState(false);
+  // 开源版不含 /api/heming：接口 404 时单独说明，而不是让用户反复重试
+  const [apiMissing, setApiMissing] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const analysisRef = useRef<HTMLDivElement>(null);
 
   // ─── 起盘（单次调用，返回 chart 给统一流程使用）──────────
+  // 开源版不含后端 /api/generate：直接用本仓库的排盘引擎在浏览器里起盘
   const generateChart = useCallback(async (info: BirthInfo): Promise<ZiweiChart | null> => {
     try {
-      const res = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(info),
-      });
-      if (!res.ok) return null;
-      return await res.json();
+      return buildChart(info);
     } catch {
       return null;
     }
@@ -119,6 +117,7 @@ export default function HemingPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ chartA: cA, chartB: cB, question: q ?? undefined }),
       });
+      if (res.status === 404) { setApiMissing(true); throw new Error('api-missing'); }
       if (!res.ok || !res.body) throw new Error();
 
       const reader = res.body.getReader();
@@ -197,7 +196,7 @@ export default function HemingPage() {
             紫微合盘
           </h1>
           <p style={{ fontSize: '13px', color: 'var(--tx-3)', lineHeight: 1.6 }}>
-            输入两个人的出生信息，AI 基于倪海夏体系分析双方命盘的缘分匹配度、感情走向与相处建议
+            输入两个人的出生信息，AI 基于倪海厦体系分析双方命盘的缘分匹配度、感情走向与相处建议
           </p>
         </div>
 
@@ -245,7 +244,7 @@ export default function HemingPage() {
             <div style={{ textAlign: 'center', padding: '32px 0' }}>
               <div style={{ fontSize: '13px', color: 'var(--tx-3)', marginBottom: '24px', lineHeight: 1.7 }}>
                 填好双方出生信息后，点击下方按钮<br />
-                AI 将基于倪海夏体系深度分析两人缘分匹配度
+                AI 将基于倪海厦体系深度分析两人缘分匹配度
               </div>
               <button
                 onClick={() => runAnalysis()}
@@ -285,7 +284,9 @@ export default function HemingPage() {
 
           {analysisError && (
             <div style={{ padding: '12px 16px', borderRadius: '10px', border: '1px solid var(--bdr)', background: 'var(--bg-card)', fontSize: '13px', color: 'var(--tx-2)', marginTop: '12px' }}>
-              分析暂时不可用，请重试。
+              {apiMissing
+                ? '开源版不含合盘 AI 分析接口（/api/heming），需要你自己实现后才能用。两人的命盘可以分别到「排盘」页（/chart）查看。'
+                : '分析暂时不可用，请重试。'}
             </div>
           )}
         </div>

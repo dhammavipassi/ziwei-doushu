@@ -13,13 +13,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # 仓库不提交 lock 文件：setup-node 不能开 cache: npm，装依赖也只能用 install
+      # 仓库已提交 package-lock.json：按锁定版本安装，并开 npm 缓存
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: npm
 
       - name: 安装依赖
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
 
       - name: 类型检查
         run: npm run typecheck

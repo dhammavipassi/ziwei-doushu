@@ -10,7 +10,7 @@ import LibrarySearch from './LibrarySearch';
 
 export const metadata = {
   title: '倪师方法论 · 古籍原典库 · 紫微斗数全集 / 全书 / 骨髓赋',
-  description: '紫微斗数权威古籍全文检索：《紫微斗数全集》《紫微斗数全书》《骨髓赋》倪海夏《天纪》引证来源',
+  description: '紫微斗数权威古籍全文检索：《紫微斗数全集》《紫微斗数全书》《骨髓赋》倪海厦《天纪》引证来源',
 };
 
 export default function LibraryHomePage() {
@@ -105,7 +105,7 @@ export default function LibraryHomePage() {
           </div>
           <div style={{ fontSize: '12px', color: 'var(--tx-2)', lineHeight: 1.8, maxWidth: '600px', margin: '0 auto' }}>
             所收录古籍均为公版（明代刊本）。<br />
-            内容持续完善，未来将补全《紫微斗数全集》全本与倪海夏《天纪》引证目录。<br />
+            内容持续完善，未来将补全《紫微斗数全集》全本与倪海厦《天纪》引证目录。<br />
             如发现任何错误请联系我们。
           </div>
         </div>

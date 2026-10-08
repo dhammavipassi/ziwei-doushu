@@ -91,8 +91,8 @@ const STARS = [
 const FEATURES = [
   {
     tag: '排盘体系',
-    title: '倪海夏正宗\n紫微斗数',
-    subtitle: '非简化版，严格遵循倪海夏老师传承',
+    title: '倪海厦正宗\n紫微斗数',
+    subtitle: '非简化版，严格遵循倪海厦老师传承',
     points: [
       '纳音五行局起盘，不采用网络简化算法',
       '命宫逆数生时、身宫顺数生时，严格对齐教学规则',
@@ -107,13 +107,13 @@ const FEATURES = [
       '十四主星完整入宫，主星关系清楚可读',
       '辅星与煞星同屏呈现，避免关键信息缺失',
       '庙旺利陷亮度分级，快速识别强弱',
-      '点击任意主星即可查看倪海夏老师对该星的详细解读',
+      '点击任意主星即可查看倪海厦老师对该星的详细解读',
     ],
   },
   {
     tag: 'AI 解读',
     title: '深度解盘\n不止于算',
-    subtitle: '倪海夏体系知识库 × Claude AI',
+    subtitle: '倪海厦体系知识库 × Claude AI',
     points: [
       '命格分析：从命宫主星出发，结合三方四正，给出全面的性格与人生格局判断',
       '六大维度解读：事业方向、感情婚姻、财运模式、健康注意、家庭关系、子女缘分',
@@ -127,7 +127,7 @@ const FEATURES = [
     subtitle: '从星曜组合中发现你的命中注定',
     points: [
       '自动识别11种经典格局：紫府同宫、杀破狼格、机月同梁、廉相格、武曲七杀等',
-      '辅弼夹命、日月夹命等特殊格局精准检测，并给出倪海夏体系下的标准解读',
+      '辅弼夹命、日月夹命等特殊格局精准检测，并给出倪海厦体系下的标准解读',
       '四化入命宫迁移宫的特殊状况自动标注，提示需关注的人生议题',
       '格局按吉凶等级分层展示，让你一目了然自己命盘中的优势与挑战',
     ],
@@ -178,7 +178,7 @@ const SECTIONS = [
   },
 ];
 
-// ─── 倪海夏核心教义 ──────────────────────────────────────
+// ─── 倪海厦核心教义 ──────────────────────────────────────
 const NI_TEACHINGS = [
   {
     title: '命宫为本，三方为用',
@@ -300,7 +300,7 @@ function FeatureVisual({ index, colors: c }: { index: number; colors: ReturnType
           })}
         </div>
         <p className="text-[10px] tracking-widest transition-colors duration-300"
-          style={{ color: c.textFaint }}>倪海夏排盘法</p>
+          style={{ color: c.textFaint }}>倪海厦排盘法</p>
       </div>
     );
   }
@@ -516,7 +516,7 @@ export default function HomePage() {
             className="flex items-center justify-center gap-3 mb-8">
             <div className="h-px w-12" style={{ background: `linear-gradient(to right, transparent, ${c.goldLine})` }} />
             <span className="text-[11px] tracking-[0.45em] transition-colors duration-300" style={{ color: c.tagText }}>
-              紫微斗数 · 倪海夏体系
+              紫微斗数 · 倪海厦体系
             </span>
             <div className="h-px w-12" style={{ background: `linear-gradient(to left, transparent, ${c.goldLine})` }} />
           </motion.div>
@@ -539,7 +539,7 @@ export default function HomePage() {
             transition={{ duration: 0.7, delay: 0.45 }}
             className="text-base md:text-lg tracking-[0.18em] mb-2"
             style={{ color: c.textSecond, fontWeight: 500 }}>
-            紫微为门 · 天地人为路 · 倪海夏为师
+            紫微为门 · 天地人为路 · 倪海厦为师
           </motion.p>
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.55 }}
@@ -886,7 +886,7 @@ export default function HomePage() {
                 天 · 地 · 人
               </h2>
               <p className="max-w-2xl mx-auto text-sm leading-relaxed" style={{ color: c.textSecond }}>
-                倪海夏老师的核心命运观：命运从来不是人生的全部。<br />
+                倪海厦老师的核心命运观：命运从来不是人生的全部。<br />
                 他将影响人生的力量分为三个同等重要的维度。
               </p>
             </div>
@@ -923,13 +923,13 @@ export default function HomePage() {
               <p className="text-sm leading-relaxed" style={{ color: c.textSecond }}>
                 「命运不是人生的全部，加上地理位置和人念，才是。」
               </p>
-              <p className="mt-2 text-[10px] tracking-widest" style={{ color: c.tagText }}>— 倪海夏</p>
+              <p className="mt-2 text-[10px] tracking-widest" style={{ color: c.tagText }}>— 倪海厦</p>
             </div>
           </FadeIn>
         </div>
       </section>
 
-      {/* ══ 倪海夏介绍 ════════════════════════════════════ */}
+      {/* ══ 倪海厦介绍 ════════════════════════════════════ */}
       <section className="relative z-10 flex items-center px-6 md:px-10 lg:px-14 py-20" style={{ minHeight: '82svh' }}>
         <WeakBoundary line={c.navBorder} />
         <div className="mx-auto w-full" style={{ maxWidth: '1280px' }}>
@@ -942,7 +942,7 @@ export default function HomePage() {
               </div>
               <h2 className={`grad-text ${theme === 'dark' ? 'grad-text-dark' : 'grad-text-light'} font-bold mb-6 tracking-tight`}
                 style={{ fontSize: 'clamp(32px, 4vw, 48px)' }}>
-                倪海夏老师
+                倪海厦老师
               </h2>
               <p className="max-w-2xl mx-auto leading-relaxed text-sm" style={{ color: c.textSecond }}>
                 当代华人圈最具影响力的中医与术数大家之一<br />
@@ -972,7 +972,7 @@ export default function HomePage() {
               <div className="space-y-4 text-sm leading-relaxed max-w-3xl mx-auto" style={{ color: c.textSecond }}>
                 <p>
                   <strong style={{ color: c.goldSolid }}>生平履历</strong>：
-                  倪海夏先生（1954–2012）出生于台湾，早年师承多位中医名家，专研经方派（《伤寒论》传承）。
+                  倪海厦先生（1954–2012）出生于台湾，早年师承多位中医名家，专研经方派（《伤寒论》传承）。
                   中年赴美行医，在美国创立<strong>汉唐中医学院</strong>，二十余年间系统传授中医与传统术数。
                   2012 年 1 月 31 日因肝癌在台湾离世，享年 58 岁。
                 </p>
@@ -1049,7 +1049,7 @@ export default function HomePage() {
                 紫微合盘
               </h2>
               <p className="text-sm leading-relaxed mb-8 max-w-lg mx-auto" style={{ color: c.textSecond }}>
-                输入两个人的出生信息，AI 基于倪海夏体系分析夫妻宫互参、命宫兼容性与三方四正交互，<br className="hidden md:block" />
+                输入两个人的出生信息，AI 基于倪海厦体系分析夫妻宫互参、命宫兼容性与三方四正交互，<br className="hidden md:block" />
                 给出感情匹配度、合伙可行性与最佳相处建议。
               </p>
               <div className="flex justify-center gap-3 flex-wrap mb-6">
@@ -1091,7 +1091,7 @@ export default function HomePage() {
           </h2>
           <p className="text-sm mb-10 max-w-md mx-auto leading-relaxed" style={{ color: c.textSecond }}>
             输入出生年月日时，在几秒内生成你的专属命盘<br />
-            再由 AI 按倪海夏体系为你深度解读
+            再由 AI 按倪海厦体系为你深度解读
           </p>
           <motion.button
             whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
@@ -1172,7 +1172,12 @@ export default function HomePage() {
 
         <div className="text-center">
           <p className="text-[10px] tracking-wider mb-3" style={{ color: c.footerText }}>
-            紫微命盘 · 基于倪海夏正宗体系
+            紫微命盘 · 基于倪海厦正宗体系 · 仅供参考，命运掌握在自己手中
+          </p>
+          <p className="text-[10px] tracking-wider mb-3 max-w-2xl mx-auto leading-relaxed"
+            style={{ color: c.footerText, opacity: 0.85 }}>
+            本平台基于中国传统文化研究，仅提供学习参考。<br className="sm:hidden" />
+            不构成任何医疗、投资、法律或重大决策建议。
           </p>
           <p className="text-[10px] tracking-wider" style={{ color: c.footerText }}>
             <a href="/terms" style={{ color: c.footerText, textDecoration: 'underline' }}>服务条款</a>

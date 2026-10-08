@@ -11,7 +11,7 @@
     "build:cf": "npx @cloudflare/next-on-pages",
     "preview:cf": "npx wrangler pages dev",
     "typecheck": "tsc --noEmit",
-    "test": "tsx scripts/regression/pan-integrity.test.ts && tsx scripts/regression/dst-cn.test.ts && tsx scripts/regression/sizhu-lichun-boundary.test.ts && tsx scripts/regression/hongluan-tianxi.test.ts && tsx scripts/regression/famous-hour-consistency.test.ts"
+    "test": "tsx scripts/regression/pan-integrity.test.ts && tsx scripts/regression/dst-cn.test.ts && tsx scripts/regression/sizhu-lichun-boundary.test.ts && tsx scripts/regression/hongluan-tianxi.test.ts && tsx scripts/regression/famous-hour-consistency.test.ts && tsx scripts/regression/iztro-time-index-boundary.test.ts && tsx scripts/regression/solar-date-exists.test.ts && tsx scripts/regression/natal-dual-sihua-same-palace.test.ts"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
@@ -21,10 +21,10 @@
     "html2canvas": "^1.4.1",
     "iztro": "^2.5.8",
     "lunar-javascript": "^1.7.3",
-    "next": "^15.5.15",
+    "next": "^16.3.8",
+    "pg": "^8.20.0",
     "react": "^19.2.5",
-    "react-dom": "^19.2.5",
-    "vercel": "^50.42.0"
+    "react-dom": "^19.2.5"
   },
   "devDependencies": {
     "@types/node": "^20",
